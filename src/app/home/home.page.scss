@@ -1,0 +1,25 @@
+.welcome-card img {
+  max-height: 35vh;
+  overflow: hidden;
+}
+
+ion-card {
+  text-align: center;
+}
+ion-card-content{
+  min-height: 15vh;
+}
+
+.card-title {
+  font-size: 2.0em;
+  width: 100%;
+  font-weight: bold;
+  color: #fff;
+}
+
+.card-subtitle {
+  font-size: 1.0em;
+  width: 100%;
+  color: #fff;
+}
+

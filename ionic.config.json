@@ -1,0 +1,7 @@
+{
+  "name": "listinha",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
