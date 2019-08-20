@@ -9,6 +9,19 @@ import { NovaListaPage } from '../nova-lista/nova-lista.page';
 })
 export class HomePage {
 
+  listas = [
+    {
+      "nome" : "Contas",
+      "cor": "#2185D0",
+      "items": 12
+    },
+    {
+      "nome" : "Viagens",
+      "cor": "#21BA45",
+      "items": 5
+    },
+  ]
+
   constructor(public modalController: ModalController) {}
 
   abrirLista($event){
@@ -19,7 +32,14 @@ export class HomePage {
     const modal = await this.modalController.create({
       component: NovaListaPage
     });
-    return await modal.present();
+    
+    await modal.present();
+
+    //TODO: implementar integração firebase
+    const { data } = await modal.onWillDismiss();
+    this.listas.push(data.lista)
+    
   }
+
 
 }

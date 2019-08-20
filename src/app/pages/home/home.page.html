@@ -10,29 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-card color="primary" class="ion-activatable" (click)="abrirLista($event)">
-    <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content text-center>
-      <div class="card-title">Contas</div>
-      <div class="card-subtitle">12 Itens</div>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card color="secondary" class="ion-activatable" (click)="abrirLista()">
-    <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content text-center>
-      <div class="card-title">Viagem</div>
-      <div class="card-subtitle">6 Itens</div>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card color="warning" class="ion-activatable" (click)="abrirLista()">
-    <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content text-center>
-      <div class="card-title">Tarefas</div>
-      <div class="card-subtitle">3 Itens</div>
-    </ion-card-content>
-  </ion-card>
+  <div *ngFor="let lista of listas">
+    <ion-card [ngStyle]="{'background-color': lista.cor}" class="ion-activatable" (click)="abrirLista($event)">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-card-content text-center>
+        <div class="card-title">{{lista.nome}}</div>
+        <div class="card-subtitle">{{lista.items}} Items</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="danger" (click)="novaLista()">

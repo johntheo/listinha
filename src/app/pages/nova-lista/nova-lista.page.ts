@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'nova-lista',
@@ -9,10 +10,25 @@ import { ModalController } from '@ionic/angular';
 export class NovaListaPage implements OnInit {
   lista = {
     nome: '',
-    cor: ''
+    cor: '',
+    items: 0
   };
 
-  constructor(public modalCtrl: ModalController) { }
+  cores = [
+    { nome: "red", valor: "#DB2828" },
+    { nome: "orange", valor: " #F2711C" },
+    { nome: "yellow", valor: " #FBBD08" },
+    { nome: "olive", valor: " #B5CC18" },
+    { nome: "green", valor: " #21BA45" },
+    { nome: "teal", valor: " #00B5AD" },
+    { nome: "blue", valor: " #2185D0" },
+    { nome: "violet", valor: " #6435C9" },
+    { nome: "purple", valor: " #A333C8" },
+    { nome: "pink", valor: " #E03997" },
+  ]
+
+  constructor(public modalCtrl: ModalController) {
+  }
 
   ngOnInit() {
   }
@@ -24,7 +40,10 @@ export class NovaListaPage implements OnInit {
   }
 
   criar(form) {
-    console.log(form.value)
+    console.log(this.lista);
+    this.modalCtrl.dismiss({
+      'lista': this.lista
+    });
   }
 
 }

@@ -1,20 +1,12 @@
+@import '../../../global.scss';
 ion-content {
     --overflow: hidden;
 }
-@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
 
-$colors: (
-  red: #DB2828,
-  orange: #F2711C,
-  yellow: #FBBD08,
-  olive: #B5CC18,
-  green: #21BA45,
-  teal: #00B5AD,
-  blue: #2185D0,
-  violet: #6435C9,
-  purple: #A333C8,
-  pink: #E03997
-);
+#radio-group{
+    padding-top: 10px;
+    width: 100%;
+}
 
 * {
   box-sizing: border-box;
@@ -23,9 +15,10 @@ $colors: (
 input[type="radio"] {
   display: none;
   &:checked + label {
-    span { transform: scale(1.25); }
+    span { transform: scale(1.2); }
     @each $name, $value in $colors {
       .#{$name} {
+        border-radius: 50%;
         border: 2px solid darken($value, 25%);
       }
     } // !@each
@@ -34,9 +27,9 @@ input[type="radio"] {
 
 label {
   display: inline-block;
-  width: 25px;
-  height: 25px;
-  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
   cursor: pointer;
   &:hover {
     span { 
@@ -50,6 +43,7 @@ label {
     transition: transform .2s ease-in-out;
     @each $name, $value in $colors {
       &.#{$name} {
+          border-radius: 50%;
         background: $value;
       }
     }
