@@ -1,18 +1,18 @@
-<ion-header no-border>
+<ion-header translucent>
   <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons> -->
-    <ion-title text-center>
-      <h1>Listinha</h1>
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-menu-button></ion-menu-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Listinha</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card color="primary" class="ion-activatable" (click)="abrirLista($event)">
     <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content>
+    <ion-card-content text-center>
       <div class="card-title">Contas</div>
       <div class="card-subtitle">12 Itens</div>
     </ion-card-content>
@@ -20,7 +20,7 @@
 
   <ion-card color="secondary" class="ion-activatable" (click)="abrirLista()">
     <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content>
+    <ion-card-content text-center>
       <div class="card-title">Viagem</div>
       <div class="card-subtitle">6 Itens</div>
     </ion-card-content>
@@ -28,7 +28,7 @@
 
   <ion-card color="warning" class="ion-activatable" (click)="abrirLista()">
     <ion-ripple-effect></ion-ripple-effect>
-    <ion-card-content>
+    <ion-card-content text-center>
       <div class="card-title">Tarefas</div>
       <div class="card-subtitle">3 Itens</div>
     </ion-card-content>
