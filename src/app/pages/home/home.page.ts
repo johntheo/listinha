@@ -37,7 +37,9 @@ export class HomePage {
 
     //TODO: implementar integração firebase
     const { data } = await modal.onWillDismiss();
-    this.listas.push(data.lista)
+    if(data.lista){
+      this.listas.push(data.lista)
+    }
     
   }
 
