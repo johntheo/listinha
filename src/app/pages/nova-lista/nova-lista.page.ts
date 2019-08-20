@@ -7,6 +7,10 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./nova-lista.page.scss'],
 })
 export class NovaListaPage implements OnInit {
+  lista = {
+    nome: '',
+    cor: ''
+  };
 
   constructor(public modalCtrl: ModalController) { }
 
@@ -17,6 +21,10 @@ export class NovaListaPage implements OnInit {
     this.modalCtrl.dismiss({
       'dismissed': true
     });
+  }
+
+  criar(form) {
+    console.log(form.value)
   }
 
 }

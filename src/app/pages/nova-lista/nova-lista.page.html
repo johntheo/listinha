@@ -1,13 +1,53 @@
 <ion-header no-border>
   <ion-toolbar>
-      <ion-buttons slot="end">
-          <ion-button (click)="dismiss()">
-              <ion-icon slot="icon-only" name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-scroll>
 
+  <form #form="ngForm" (ngSubmit)="criar(form)" novalidate>
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input type="text" required [(ngModel)]="lista.nome" ngControl="nome" name="nome"></ion-input>
+    </ion-item>
+    <ion-item text-center lines="none">
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="red" value="red" />
+      <label for="red"><span class="red"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="green" value="green" />
+      <label for="green"><span class="green"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="yellow" value="yellow" />
+      <label for="yellow"><span class="yellow"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="olive" value="olive" />
+      <label for="olive"><span class="olive"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="orange" value="orange" />
+      <label for="orange"><span class="orange"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="teal" value="teal" />
+      <label for="teal"><span class="teal"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="blue" value="blue" />
+      <label for="blue"><span class="blue"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="violet" value="violet" />
+      <label for="violet"><span class="violet"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="purple" value="purple" />
+      <label for="purple"><span class="purple"></span></label>
+
+      <input [(ngModel)]="lista.cor" ngControl="cor" type="radio" name="color" id="pink" value="pink" />
+      <label for="pink"><span class="pink"></span></label>
+    </ion-item>
+
+    <ion-button type="submit" color="primary" shape="full" expand="block">Criar</ion-button>
+  </form>
+  
 </ion-content>
