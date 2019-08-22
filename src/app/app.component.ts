@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private fireauth: AngularFireAuth
+    private authService: AuthService
   ) {
     this.initializeApp();
   }
@@ -38,33 +37,9 @@ export class AppComponent {
       this.statusBar.styleDefault();
 
       //Login anonimo
-      this.signInAnonymously().then(
-        (userData) => {
-          console.log("Login anonimo", userData);
-        }
-      ).catch(err => {
-        if (err) {
-          console.log(err);
-        }
-  
-      })
-
+      this.authService.anonymousLogin();
 
       this.splashScreen.hide();
-    });
-  }
-
-  private signInAnonymously() {
-    return new Promise<any>((resolve, reject) => {
-      this.fireauth.auth.signInAnonymously().then((data) => {
-        resolve(data);
-      }).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        reject(`Login falhou - ${error.message}`)
-      });
     });
   }
 }

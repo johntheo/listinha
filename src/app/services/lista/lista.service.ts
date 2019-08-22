@@ -2,13 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, QueryDocumentSnapshot } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Lista } from 'src/app/interfaces/lista';
 
-export interface Lista{
-  nome: string;
-  cor: string;
-  items: number;
-  data_criacao: Date; 
-}
 @Injectable({
   providedIn: 'root'
 })
