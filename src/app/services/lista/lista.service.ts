@@ -21,7 +21,7 @@ export class ListaService {
     this.listas = this.listasCollectiion.snapshotChanges().pipe(
       map(actions => {
         //ULTIMO LISTA
-        this.lastSeen = actions[this.LIMIT - 1].payload.doc;
+        this.lastSeen = actions[actions.length > this.LIMIT ? this.LIMIT - 1 : actions.length - 1].payload.doc;
 
         return actions.map(a => {
           const data = a.payload.doc.data();

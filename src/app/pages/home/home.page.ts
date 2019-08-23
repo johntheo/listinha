@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NovaListaPage } from '../nova-lista/nova-lista.page';
+import { ListaService } from 'src/app/services/lista/lista.service';
+import { Observable } from 'rxjs';
+import { Lista } from '../../interfaces/lista';
 
 @Component({
   selector: 'app-home',
@@ -9,38 +12,32 @@ import { NovaListaPage } from '../nova-lista/nova-lista.page';
 })
 export class HomePage {
 
-  listas = [
-    {
-      "nome" : "Contas",
-      "cor": "#2185D0",
-      "items": 12
-    },
-    {
-      "nome" : "Viagens",
-      "cor": "#21BA45",
-      "items": 5
-    },
-  ]
+  listas: Lista[];
 
-  constructor(public modalController: ModalController) {}
+  constructor(public modalController: ModalController, public listaService: ListaService) { }
 
-  abrirLista($event){
-    console.log("Abrir Lista",$event);
+  ngOnInit(){
+    this.listaService.getListas().subscribe(res => {
+      this.listas = res;
+    })
+  }
+  abrirLista($event) {
+    console.log("Abrir Lista", $event);
   }
 
   async novaLista() {
     const modal = await this.modalController.create({
       component: NovaListaPage
     });
-    
+
     await modal.present();
 
     //TODO: implementar integração firebase
     const { data } = await modal.onWillDismiss();
-    if(data.lista){
-      this.listas.push(data.lista)
+    if (data.lista) {
+      this.listaService.addLista(data.lista);
     }
-    
+
   }
 
 

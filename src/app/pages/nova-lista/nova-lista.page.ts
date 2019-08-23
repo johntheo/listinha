@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Lista } from 'src/app/interfaces/lista';
 
 @Component({
   selector: 'nova-lista',
@@ -8,10 +9,11 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
   styleUrls: ['./nova-lista.page.scss'],
 })
 export class NovaListaPage implements OnInit {
-  lista = {
+  lista: Lista = {
     nome: '',
     cor: '',
-    items: 0
+    items: 0,
+    data_criacao: new Date()
   };
 
   cores = [
