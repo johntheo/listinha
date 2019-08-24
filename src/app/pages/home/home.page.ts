@@ -4,6 +4,7 @@ import { NovaListaPage } from '../nova-lista/nova-lista.page';
 import { ListaService } from 'src/app/services/lista/lista.service';
 import { Observable } from 'rxjs';
 import { Lista } from '../../interfaces/lista';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,15 +15,16 @@ export class HomePage {
 
   listas: Lista[];
 
-  constructor(public modalController: ModalController, public listaService: ListaService) { }
+  constructor(public modalController: ModalController, public listaService: ListaService, private router:Router) { }
 
   ngOnInit(){
     this.listaService.getListas().subscribe(res => {
       this.listas = res;
     })
   }
-  abrirLista($event) {
-    console.log("Abrir Lista", $event);
+  abrirLista(id) {
+    console.log("Abrir Lista", id);
+    this.router.navigate([`/lista/${id}`]);
   }
 
   async novaLista() {

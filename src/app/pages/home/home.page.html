@@ -11,7 +11,7 @@
 
 <ion-content>
   <div *ngFor="let lista of listas">
-    <ion-card [ngStyle]="{'background-color': lista.cor}" class="ion-activatable" (click)="abrirLista($event)">
+    <ion-card [ngStyle]="{'background-color': lista.cor}" class="ion-activatable" (click)="abrirLista(lista.id)">
       <ion-ripple-effect></ion-ripple-effect>
       <ion-card-content text-center>
         <div class="card-title">{{lista.nome}}</div>
