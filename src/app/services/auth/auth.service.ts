@@ -1,10 +1,10 @@
 
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from "@angular/router";
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { auth } from 'firebase/app';
 import { Usuario } from 'src/app/interfaces/usuario';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { FirestoreService } from '../firebase/firestore.service';
 
 
@@ -12,20 +12,16 @@ import { FirestoreService } from '../firebase/firestore.service';
   providedIn: 'root'
 })
 export class AuthService {
-
   authState: any = null;
-  private firestoreService: FirestoreService;
-
 
   constructor(private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private service: FirestoreService) {
+    private firestoreService: FirestoreService) {
 
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth
     });
-    this.firestoreService = service;
   }
 
   // Returns true if user is logged in

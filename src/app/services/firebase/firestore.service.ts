@@ -1,17 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-  AngularFirestoreCollection,
-  DocumentChangeAction,
-  Action,
-  DocumentSnapshotDoesNotExist,
-  DocumentSnapshotExists,
-} from 'angularfire2/firestore';
-import { Observable, from } from 'rxjs';
-import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
-
+import { Action, AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentSnapshotDoesNotExist, DocumentSnapshotExists } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+
 
 
 @Injectable({

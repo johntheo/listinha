@@ -21,7 +21,7 @@
   </div> -->
 
   <div class="scrolling-wrapper">
-    <ion-card *ngFor="let lista of listas" [ngStyle]="{'background-color': lista.cor}" class="ion-activatable">
+    <ion-card *ngFor="let lista of listas | async" [ngStyle]="{'background-color': lista.cor}" class="ion-activatable">
       <ion-ripple-effect></ion-ripple-effect>
       <ion-card-content text-center (click)="abrirLista(lista.id)">
         <div class="card-title">{{lista.nome}}</div>
