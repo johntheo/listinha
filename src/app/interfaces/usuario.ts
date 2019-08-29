@@ -3,6 +3,4 @@ export interface Usuario {
     nome: string;
     email: string;
     listas: string[];
-    data_criacao: Date;
-    ultimo_login: Date;
 }

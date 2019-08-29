@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Lista } from 'src/app/interfaces/lista';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'nova-lista',
@@ -13,7 +14,9 @@ export class NovaListaPage implements OnInit {
     nome: '',
     cor: '',
     items: 0,
-    data_criacao: new Date()
+    editores: [],
+    leitores: [],
+    proprietario: ''
   };
 
   cores = [
@@ -29,7 +32,7 @@ export class NovaListaPage implements OnInit {
     { nome: "pink", valor: " #E03997" },
   ]
 
-  constructor(public modalCtrl: ModalController) {
+  constructor(public modalCtrl: ModalController, private auth:AuthService) {
   }
 
   ngOnInit() {
@@ -42,7 +45,7 @@ export class NovaListaPage implements OnInit {
   }
 
   criar(form) {
-    console.log(this.lista);
+    this.lista.proprietario = this.auth.currentUserId;
     this.modalCtrl.dismiss({
       'lista': this.lista
     });

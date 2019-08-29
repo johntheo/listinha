@@ -1,5 +1,5 @@
 <ion-header translucent no-border>
-  <ion-toolbar>
+  <ion-toolbar color="translucent">
     <ion-buttons slot="start">
       <ion-button>
         <ion-menu-button></ion-menu-button>
@@ -9,8 +9,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div *ngFor="let lista of listas">
+<ion-content fullscreen=true>
+  <!-- <div *ngFor="let lista of listas">
     <ion-card [ngStyle]="{'background-color': lista.cor}" class="ion-activatable" (click)="abrirLista(lista.id)">
       <ion-ripple-effect></ion-ripple-effect>
       <ion-card-content text-center>
@@ -18,11 +18,26 @@
         <div class="card-subtitle">{{lista.items}} Items</div>
       </ion-card-content>
     </ion-card>
+  </div> -->
+
+  <div class="scrolling-wrapper">
+    <ion-card *ngFor="let lista of listas" [ngStyle]="{'background-color': lista.cor}" class="ion-activatable">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-card-content text-center (click)="abrirLista(lista.id)">
+        <div class="card-title">{{lista.nome}}</div>
+        <div class="card-subtitle">{{lista.items}} Items</div>
+      </ion-card-content>
+      <!-- <ion-footer text-center>
+        <ion-button shape="round" fill="outline" color="light" size="small">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-footer> -->
+    </ion-card>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="novaLista()">
-      <ion-icon name="add"></ion-icon>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="light" (click)="novaLista()">
+      <ion-icon name="add" color="primary"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 

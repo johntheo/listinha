@@ -5,6 +5,9 @@ import { ListaService } from 'src/app/services/lista/lista.service';
 import { Observable } from 'rxjs';
 import { Lista } from '../../interfaces/lista';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { FirestoreService } from 'src/app/services/firebase/firestore.service';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +17,14 @@ import { Router } from '@angular/router';
 export class HomePage {
 
   listas: Lista[];
+  listaRef: AngularFirestoreCollection;
 
-  constructor(public modalController: ModalController, public listaService: ListaService, private router:Router) { }
+  constructor(public modalController: ModalController, public listaService: FirestoreService, private router: Router, private auth: AuthService, private afs: AngularFirestore) {
+    this.listaRef = this.afs.collection<Lista>('listas', ref => ref.orderBy('createdAt'));
+  }
 
-  ngOnInit(){
-    this.listaService.getListas().subscribe(res => {
+  ngOnInit() {
+    this.listaService.list(this.listaRef).subscribe(res => {
       this.listas = res;
     })
   }
@@ -37,7 +43,7 @@ export class HomePage {
     //TODO: implementar integração firebase
     const { data } = await modal.onWillDismiss();
     if (data.lista) {
-      this.listaService.addLista(data.lista);
+      this.listaService.add(this.listaRef,data.lista);
     }
 
   }

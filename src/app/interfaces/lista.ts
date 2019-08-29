@@ -2,5 +2,7 @@ export interface Lista{
     nome: string;
     cor: string;
     items: number;
-    data_criacao: Date; 
+    proprietario: string;
+    editores: string[];
+    leitores: string[];
   }

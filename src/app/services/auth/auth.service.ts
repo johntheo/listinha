@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { auth } from 'firebase/app';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { FirestoreService } from '../firebase/firestore.service';
 
 
 @Injectable({
@@ -13,14 +14,18 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 export class AuthService {
 
   authState: any = null;
+  private firestoreService: FirestoreService;
+
 
   constructor(private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router) {
+    private router: Router,
+    private service: FirestoreService) {
 
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth
     });
+    this.firestoreService = service;
   }
 
   // Returns true if user is logged in
@@ -140,31 +145,12 @@ export class AuthService {
 
   private updateUserData() {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`usuarios/${this.currentUserId}`);
-    userRef.get().subscribe(usuario => {
-      if (usuario.exists) {
-        console.log("Usuario existente", this.currentUserId);
-        let userData = {
-          ultimo_login: new Date(),
-        }
-        return userRef.set(userData, { merge: true });
-      } else {
-        console.log("Novo usuario");
-        let userData: Usuario = {
-          uid: this.currentUserId,
-          email: this.authState.email,
-          nome: this.currentUserDisplayName,
-          listas: [],
-          data_criacao: new Date(),
-          ultimo_login: new Date(),
-        }
-        return userRef.set(userData, { merge: true });
-      }
-    });
-
-
+    let userData: Usuario = {
+      uid: this.currentUserId,
+      email: this.authState.email,
+      nome: this.currentUserDisplayName,
+      listas: []
+    }
+    return this.firestoreService.upsert(userRef, userData);
   }
-
-
-
-
 }
