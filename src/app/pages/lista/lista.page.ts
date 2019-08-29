@@ -79,11 +79,13 @@ export class ListaPage implements OnInit {
   }
 
   atualizarContadorLista() {
-    return this.itemsPendentes.subscribe(res => {
+    let contadorRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false));
+    
+    this.firestoreService.list<ToDoItem>(contadorRef).subscribe(res => {
       if(res){
-        return this.firestoreService.update(this.listaRef, { items: res.length });
+        this.firestoreService.update(this.listaRef, { items: res.length });
       }else{
-        return this.firestoreService.update(this.listaRef, { items: 0 })
+        this.firestoreService.update(this.listaRef, { items: 0 })
       }
     })
   }
