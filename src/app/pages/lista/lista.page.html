@@ -54,10 +54,16 @@
 
 <ion-footer>
   <ion-toolbar>
+
     <ion-item>
       <ion-label position="floating">Novo Item</ion-label>
       <ion-input [(ngModel)]="item.nome" type="text"></ion-input>
     </ion-item>
+    <ion-buttons slot="end">
+        <ion-button fill="outline" color="dark">
+          <ion-icon name="clock"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     <ion-buttons slot="end">
       <ion-button fill="solid" color="primary" (click)="adicionarItem()">
         <ion-icon name="add"></ion-icon>
