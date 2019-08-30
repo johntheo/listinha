@@ -6,17 +6,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content full class="content-color">
   <ion-text>
     <h1 class="ion-padding-horizontal">{{(lista | async)?.nome}}</h1>
   </ion-text>
 
-  <ion-segment [(ngModel)]="status" full=true>
-    <ion-segment-button value="pendentes">Pendentes</ion-segment-button>
-    <ion-segment-button value="finalizados">Finalizados</ion-segment-button>
-  </ion-segment>
+  <ion-card [ngSwitch]="status" class="card-lista">
+    <ion-segment [(ngModel)]="status" full=true>
+      <ion-segment-button value="pendentes">Pendentes</ion-segment-button>
+      <ion-segment-button value="finalizados">Finalizados</ion-segment-button>
+    </ion-segment>
 
-  <div [ngSwitch]="status">
     <ion-list *ngSwitchCase="'pendentes'">
       <ion-item-sliding (ionSwipe)="toggleItem(item,$event)" *ngFor="let item of itemsPendentes | async">
         <ion-item-options side="start">
@@ -48,16 +48,33 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-  </div>
-
+  </ion-card>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-item>
+  <ion-toolbar color="primary">
+    <!-- <ion-item>
+      <ion-avatar slot="start">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+      </ion-avatar>
       <ion-label position="floating">Novo Item</ion-label>
       <ion-input [(ngModel)]="item.nome" type="text"></ion-input>
-    </ion-item>
+      <ion-icon name="clock" slot="end"></ion-icon>
+    </ion-item> -->
+    <!-- <ion-item (click)="testClick()" lines="none"> -->
+    <ion-avatar slot="start">
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+    </ion-avatar>
+    <ion-input class="input-item" [(ngModel)]="item.nome" type="text" placeholder="Novo Item"
+      (keyup.enter)="adicionarItem()"></ion-input>
+    <!-- <ion-searchbar placeholder="Novo Item" searchIcon="add"></ion-searchbar> -->
+    <!-- <ion-textarea placeholder="Novo item" rows="1"></ion-textarea> -->
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" (click)="popoverSchedule()">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- </ion-item> -->
     <ion-buttons slot="end">
       <ion-button fill="solid" color="primary" (click)="adicionarItem()">
         <ion-icon name="add"></ion-icon>

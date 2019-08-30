@@ -7,7 +7,7 @@ import { Lista } from 'src/app/interfaces/lista';
 import { Observer, Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-lista',
+  selector: 'lista-page',
   templateUrl: './lista.page.html',
   styleUrls: ['./lista.page.scss'],
 })
@@ -38,27 +38,35 @@ export class ListaPage implements OnInit {
     this.lista = this.firestoreService.get<Lista>(this.listaRef);
 
     this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false));
-    this.itemsPendentes = this.firestoreService.list<ToDoItem>(this.itemsPendentesRef)
+    this.itemsPendentes = this.firestoreService.list<ToDoItem>(this.itemsPendentesRef);
 
     this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true));
-    this.itemsFinalizados = this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef)
+    this.itemsFinalizados = this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef);
 
+    //Atualiza Contador da lista
+    this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
+      if (res) {
+        return this.firestoreService.update(this.listaRef, { items: res.length });
+      } else {
+        return this.firestoreService.update(this.listaRef, { items: 0 })
+      }
+    });
   }
 
   toggleItem(item: ToDoItem) {
     item.finalizado = !item.finalizado;
     let itemRef = this.afs.doc(`listas/${this.id}/items/${item.id}`);
-    this.firestoreService.update(itemRef, item).then(() => this.atualizarContadorLista());
+    this.firestoreService.update(itemRef, item);
   }
 
   adicionarItem() {
     //console.log(this.item);
-    this.firestoreService.add(this.itemsPendentesRef, this.item).then(() => this.limparItem()).then(() => this.atualizarContadorLista());
+    this.firestoreService.add(this.itemsPendentesRef, this.item).then(() => this.limparItem());
   }
 
   deletarItem(item: ToDoItem) {
     let itemRef = this.afs.doc(`listas/${this.id}/items/${item.id}`);
-    this.firestoreService.delete(itemRef).then(() => this.atualizarContadorLista());
+    this.firestoreService.delete(itemRef);
     //TODO: Toast
   }
 
@@ -78,11 +86,15 @@ export class ListaPage implements OnInit {
     }
   }
 
+  popoverSchedule() {
+
+  }
+
   atualizarContadorLista() {
     return this.itemsPendentes.subscribe(res => {
-      if(res){
+      if (res) {
         return this.firestoreService.update(this.listaRef, { items: res.length });
-      }else{
+      } else {
         return this.firestoreService.update(this.listaRef, { items: 0 })
       }
     })
