@@ -25,7 +25,9 @@
       <ion-ripple-effect></ion-ripple-effect>
       <ion-card-content text-center (click)="abrirLista(lista.id)">
         <div class="card-title">{{lista.nome}}</div>
-        <div class="card-subtitle">{{lista.items}} Items</div>
+        <div class="card-subtitle">
+            <ion-progress-bar color="medium" [value]="lista.porcentagem"></ion-progress-bar>
+        </div>
       </ion-card-content>
       <!-- <ion-footer text-center>
         <ion-button shape="round" fill="outline" color="light" size="small">

@@ -12,7 +12,7 @@ export class NovaListaPage implements OnInit {
   lista: Lista = {
     nome: '',
     cor: '',
-    items: 0,
+    porcentagem: 0,
     editores: [],
     leitores: [],
     proprietario: ''

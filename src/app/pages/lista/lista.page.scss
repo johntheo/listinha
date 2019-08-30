@@ -4,17 +4,17 @@ ion-avatar {
   margin-left: 10px;
 }
 
-.input-item{
+.input-item {
   background-color: rgba($color: #fff, $alpha: 0.2);
   width: 96%;
-  margin-left: 2%;
+  margin-left: 3%;
   border-radius: 15px;
 }
 
-.card-lista{
-  height: 85%;
+ion-input{
+  --padding-start: 10px;
 }
 
-// ion-content {
-//   --ion-background-color: #d5ffd5;
-// }
+.text-done {
+  text-decoration: line-through;
+}

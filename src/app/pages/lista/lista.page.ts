@@ -20,8 +20,10 @@ export class ListaPage implements OnInit {
   itemsFinalizadosRef: AngularFirestoreCollection;
 
   lista: Observable<Lista>;
-  itemsPendentes: Observable<ToDoItem[]>;
-  itemsFinalizados: Observable<ToDoItem[]>;
+  itemsPendentes: ToDoItem[];
+  itemsFinalizados: ToDoItem[];
+
+  porcentagem: number;
 
   item: ToDoItem = {
     prioridade: 1,
@@ -38,17 +40,27 @@ export class ListaPage implements OnInit {
     this.lista = this.firestoreService.get<Lista>(this.listaRef);
 
     this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false));
-    this.itemsPendentes = this.firestoreService.list<ToDoItem>(this.itemsPendentesRef);
+    this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
+      this.itemsPendentes = res;
+    });
 
     this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true));
-    this.itemsFinalizados = this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef);
+    this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef).subscribe(res => {
+      this.itemsFinalizados = res;
+    });
 
     //Atualiza Contador da lista
-    this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
+    this.firestoreService.list<ToDoItem>(this.afs.collection(`listas/${this.id}/items`)).subscribe(res => {
       if (res) {
-        return this.firestoreService.update(this.listaRef, { items: res.length });
+        let pendentes = res.filter(el => el.finalizado == false).length;
+        let finalizados = res.filter(el => el.finalizado == true).length;
+        this.porcentagem = finalizados / (finalizados + pendentes);
+
+        return this.firestoreService.update(this.listaRef, { porcentagem: this.porcentagem });
       } else {
-        return this.firestoreService.update(this.listaRef, { items: 0 })
+        this.porcentagem = 0;
+
+        return this.firestoreService.update(this.listaRef, { porcentagem: 0 })
       }
     });
   }
@@ -60,8 +72,9 @@ export class ListaPage implements OnInit {
   }
 
   adicionarItem() {
-    //console.log(this.item);
-    this.firestoreService.add(this.itemsPendentesRef, this.item).then(() => this.limparItem());
+    if (this.item.nome) {
+      this.firestoreService.add(this.itemsPendentesRef, this.item).then(() => this.limparItem());
+    }
   }
 
   deletarItem(item: ToDoItem) {
@@ -90,13 +103,4 @@ export class ListaPage implements OnInit {
 
   }
 
-  atualizarContadorLista() {
-    return this.itemsPendentes.subscribe(res => {
-      if (res) {
-        return this.firestoreService.update(this.listaRef, { items: res.length });
-      } else {
-        return this.firestoreService.update(this.listaRef, { items: 0 })
-      }
-    })
-  }
 }

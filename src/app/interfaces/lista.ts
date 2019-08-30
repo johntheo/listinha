@@ -1,7 +1,7 @@
 export interface Lista{
     nome: string;
     cor: string;
-    items: number;
+    porcentagem: number;
     proprietario: string;
     editores: string[];
     leitores: string[];
