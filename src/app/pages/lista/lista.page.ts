@@ -23,7 +23,7 @@ export class ListaPage implements OnInit {
   itemsPendentes: ToDoItem[];
   itemsFinalizados: ToDoItem[];
 
-  porcentagem: number;
+  porcentagem: number = 0;
 
   item: ToDoItem = {
     prioridade: 1,
