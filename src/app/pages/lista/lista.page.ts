@@ -5,6 +5,9 @@ import { FirestoreService } from 'src/app/services/firebase/firestore.service';
 import { ToDoItem } from 'src/app/interfaces/item';
 import { Lista } from 'src/app/interfaces/lista';
 import { Observer, Observable } from 'rxjs';
+import { LoadingController, PopoverController } from '@ionic/angular';
+import { ItemScheduleComponent } from 'src/app/components/item-schedule/item-schedule.component';
+import { ItemPrioridadeComponent } from 'src/app/components/item-prioridade/item-prioridade.component';
 
 @Component({
   selector: 'lista-page',
@@ -31,26 +34,34 @@ export class ListaPage implements OnInit {
     finalizado: false
   }
 
-  constructor(private route: ActivatedRoute, private afs: AngularFirestore, private firestoreService: FirestoreService) { }
+  constructor(private route: ActivatedRoute, private afs: AngularFirestore, private firestoreService: FirestoreService, private loadingCtrl: LoadingController, private popoverCtrl: PopoverController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const loading = await this.loadingCtrl.create({
+      spinner: 'crescent',
+      duration: 5000,
+      message: 'Carregando items...',
+      translucent: true,
+    });
+    await loading.present();
+
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.listaRef = this.afs.doc(`listas/${this.id}`);
-    this.lista = this.firestoreService.get<Lista>(this.listaRef);
+    this.lista = await this.firestoreService.get<Lista>(this.listaRef);
 
     this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false));
-    this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
+    await this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
       this.itemsPendentes = res;
     });
 
     this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true));
-    this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef).subscribe(res => {
+    await this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef).subscribe(res => {
       this.itemsFinalizados = res;
     });
 
     //Atualiza Contador da lista
-    this.firestoreService.list<ToDoItem>(this.afs.collection(`listas/${this.id}/items`)).subscribe(res => {
+    await this.firestoreService.list<ToDoItem>(this.afs.collection(`listas/${this.id}/items`)).subscribe(res => {
       if (res) {
         let pendentes = res.filter(el => el.finalizado == false).length;
         let finalizados = res.filter(el => el.finalizado == true).length;
@@ -63,6 +74,8 @@ export class ListaPage implements OnInit {
         return this.firestoreService.update(this.listaRef, { porcentagem: 0 })
       }
     });
+
+    await loading.dismiss();
   }
 
   toggleItem(item: ToDoItem) {
@@ -99,7 +112,25 @@ export class ListaPage implements OnInit {
     }
   }
 
-  popoverSchedule() {
+  async popoverSchedule(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: ItemScheduleComponent,
+      event: ev,
+      animated: true,
+      showBackdrop: true
+    });
+    return await popover.present();
+
+  }
+
+  async popoverPrioridade(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: ItemPrioridadeComponent,
+      event: ev,
+      animated: true,
+      showBackdrop: true
+    });
+    return await popover.present();
 
   }
 

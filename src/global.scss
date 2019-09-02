@@ -39,3 +39,7 @@ $colors: (
     "purple": #A333C8,
     "pink": #E03997
 );
+
+.popover-content {
+    --max-width: fit-content;
+}

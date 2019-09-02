@@ -14,10 +14,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { ItemScheduleComponent } from './components/item-schedule/item-schedule.component';
+import { ItemPrioridadeComponent } from './components/item-prioridade/item-prioridade.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, ItemScheduleComponent, ItemPrioridadeComponent],
+  entryComponents: [ItemScheduleComponent, ItemPrioridadeComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
