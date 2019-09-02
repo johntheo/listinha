@@ -29,10 +29,17 @@ export class ListaPage implements OnInit {
   porcentagem: number = 0;
 
   item: ToDoItem = {
-    prioridade: 1,
+    prioridade: 0,
     nome: '',
     finalizado: false
   }
+
+  prioridadeCores = [
+    "",
+    "success",
+    "warning",
+    "danger"
+  ]
 
   constructor(private route: ActivatedRoute, private afs: AngularFirestore, private firestoreService: FirestoreService, private loadingCtrl: LoadingController, private popoverCtrl: PopoverController) { }
 
@@ -50,12 +57,12 @@ export class ListaPage implements OnInit {
     this.listaRef = this.afs.doc(`listas/${this.id}`);
     this.lista = await this.firestoreService.get<Lista>(this.listaRef);
 
-    this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false));
+    this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false).orderBy('prioridade','desc'));
     await this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
       this.itemsPendentes = res;
     });
 
-    this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true));
+    this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true).orderBy('prioridade','desc'));
     await this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef).subscribe(res => {
       this.itemsFinalizados = res;
     });
@@ -129,6 +136,12 @@ export class ListaPage implements OnInit {
       event: ev,
       animated: true,
       showBackdrop: true
+    });
+
+    popover.onWillDismiss().then((res) =>{
+      if(res.data){
+        this.item.prioridade = res.data.prioridade
+      }
     });
     return await popover.present();
 

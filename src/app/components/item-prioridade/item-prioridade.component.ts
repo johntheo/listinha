@@ -10,9 +10,9 @@ export class ItemPrioridadeComponent implements OnInit {
 
   constructor(private popoverCtrl: PopoverController) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  setPrioridade(){
-    this.popoverCtrl.dismiss();
+  setPrioridade(prioridade: number) {
+    this.popoverCtrl.dismiss({ prioridade: prioridade });
   }
 }
