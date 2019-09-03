@@ -6,53 +6,62 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content full class="content-color">
   <ion-text>
     <h1 class="ion-padding-horizontal">{{(lista | async)?.nome}}</h1>
   </ion-text>
 
-  <ion-segment [(ngModel)]="status" full=true>
-    <ion-segment-button value="pendentes">Pendentes</ion-segment-button>
-    <ion-segment-button value="finalizados">Finalizados</ion-segment-button>
-  </ion-segment>
+  <ion-item lines="none">
+    <ion-progress-bar color="primary" [value]="porcentagem"></ion-progress-bar>
+    <span>
+      <ion-label class="ion-text ion-padding-horizontal">{{porcentagem*100 | number : '1.0-0'}}%</ion-label>
+    </span>
+  </ion-item>
 
-  <div [ngSwitch]="status">
-    <ion-list *ngSwitchCase="'pendentes'">
-      <ion-item-sliding (ionSwipe)="toggleItem(item,$event)" *ngFor="let item of itemsPendentes | async">
-        <ion-item-options side="start">
-          <ion-item-option expandable color="danger">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-        <ion-item lines="full">
-          <ion-label>{{item.nome}}</ion-label>
-        </ion-item>
-        <ion-item-options side="end">
-          <ion-item-option expandable>Feito!</ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
 
-    <ion-list *ngSwitchCase="'finalizados'">
-      <ion-item-sliding (ionSwipe)="onSwipe(item,$event)" *ngFor="let item of itemsFinalizados | async">
-        <ion-item-options side="start">
-          <ion-item-option expandable color="danger">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-        <ion-item lines="full">
-          <ion-label>{{item.nome}}</ion-label>
-        </ion-item>
-        <ion-item-options side="end">
-          <ion-item-option expandable color="secondary">Refazer!</ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
-  </div>
+  <ion-list lines="full" class="ion-padding-top">
+    <ion-item-sliding (ionSwipe)="onSwipe(item,$event)" *ngFor="let item of itemsPendentes">
+      <ion-item-options side="start">
+        <ion-item-option expandable color="danger" (click)="deletarItem(item)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item>
+        <!-- <ion-buttons slot="start">
+          <ion-button fill="clear" [color]="prioridadeCores[item.prioridade]" (click)="toggleItem(item)">
+            <ion-icon name="radio-button-off"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+        <ion-label [color]="prioridadeCores[item.prioridade]">{{item.nome}}</ion-label>
+      </ion-item>
+      <ion-item-options side="end" (click)="toggleItem(item)">
+        <ion-item-option expandable color="success">Feito!</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
 
+    <ion-item-sliding (ionSwipe)="onSwipe(item,$event)" *ngFor="let item of itemsFinalizados">
+      <ion-item-options side="start">
+        <ion-item-option expandable color="danger" (click)="deletarItem(item)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item class="text-done">
+        <!-- <ion-buttons slot="start">
+          <ion-button fill="clear" [color]="prioridadeCores[item.prioridade]" (click)="toggleItem(item)">
+            <ion-icon name="radio-button-on"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+        <ion-label [color]="prioridadeCores[item.prioridade]">{{item.nome}}</ion-label>
+      </ion-item>
+      <ion-item-options side="end" (click)="toggleItem(item)">
+        <ion-item-option expandable color="warning">Refazer!</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
 
 <ion-footer>
+<<<<<<< HEAD
   <ion-toolbar>
 
     <ion-item>
@@ -66,6 +75,24 @@
       </ion-buttons>
     <ion-buttons slot="end">
       <ion-button fill="solid" color="primary" (click)="adicionarItem()">
+=======
+  <ion-toolbar color="light">
+
+    <ion-buttons slot="start">
+      <ion-button fill="clear" [color]="prioridadeCores[item.prioridade]" (click)="popoverPrioridade($event)">
+        <ion-icon name="radio-button-off"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-input class="input-item" [(ngModel)]="item.nome" type="text" placeholder="Novo Item"
+      (keyup.enter)="adicionarItem()"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" color="success" (click)="popoverSchedule($event)">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" color="primary" (click)="adicionarItem()">
+>>>>>>> 724b6a0de2f113f1d4e79a93b25ef26822e71da8
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>

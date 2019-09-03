@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FirestoreService } from 'src/app/services/firebase/firestore.service';
@@ -18,11 +18,27 @@ export class HomePage {
   listas: Observable<Lista[]>;
   listaRef: AngularFirestoreCollection;
 
-  constructor(public modalController: ModalController, public firestoreService: FirestoreService, private router: Router, private auth: AuthService, private afs: AngularFirestore) { }
+  constructor(public modalController: ModalController, 
+    public firestoreService: FirestoreService, 
+    private router: Router, 
+    private auth: AuthService, 
+    private afs: AngularFirestore,
+    private loadingController: LoadingController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      duration: 5000,
+      message: 'Carregando listas...',
+      translucent: true,
+    });
+    await loading.present();
+    
     this.listaRef = this.afs.collection<Lista>('listas', ref => ref.orderBy('createdAt'));
-    this.listas = this.firestoreService.list(this.listaRef);
+    this.listas = await this.firestoreService.list(this.listaRef);
+
+    await loading.dismiss();
   }
   abrirLista(id) {
     this.router.navigate([`/lista/${id}`]);
@@ -41,6 +57,10 @@ export class HomePage {
       this.firestoreService.add(this.listaRef,data.lista);
     }
 
+  }
+
+  async loader(){
+    return 
   }
 
 
