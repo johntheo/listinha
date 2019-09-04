@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { ItemScheduleComponent } from './components/item-schedule/item-schedule.component';
 import { ItemPrioridadeComponent } from './components/item-prioridade/item-prioridade.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, ItemScheduleComponent, ItemPrioridadeComponent],
@@ -28,6 +29,7 @@ import { ItemPrioridadeComponent } from './components/item-prioridade/item-prior
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    FormsModule,
   ],
   providers: [
     StatusBar,

@@ -18,3 +18,8 @@ ion-input{
 .text-done {
   text-decoration: line-through;
 }
+
+// (workaround)Inserido para não mostrar o componente de date-time
+ion-datetime{
+    display: none;
+}

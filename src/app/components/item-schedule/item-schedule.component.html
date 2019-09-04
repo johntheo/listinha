@@ -1,3 +1,25 @@
-<p>
-  item-schedule works!
-</p>
+<ion-list>
+  <ion-item>
+    <ion-label>Data Inicio</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" min="2019" max="2050" placeholder="Escolha uma data" [value]="data.dataInicio"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Data Fim</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" min="2019" max="2050" placeholder="Escolha uma data"></ion-datetime>
+  </ion-item>
+</ion-list>
+
+<ion-list>
+  <ion-item>
+    <ion-label>Repetir</ion-label>
+    <ion-toggle [(ngModel)]="data.recorrente" color=˜primary˜></ion-toggle>
+  </ion-item>
+
+  <ion-item *ngIf="data.recorrente">
+    <ion-label>Frequência</ion-label>
+    <ion-select placeholder="Select One">
+        <ion-select-option value="f">Female</ion-select-option>
+        <ion-select-option value="m">Male</ion-select-option>
+      </ion-select>
+  </ion-item>
+</ion-list>

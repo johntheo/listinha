@@ -9,6 +9,7 @@
 <ion-content full class="content-color">
   <ion-text>
     <h1 class="ion-padding-horizontal">{{(lista | async)?.nome}}</h1>
+    <h5>{{minha_data}}</h5>
   </ion-text>
 
   <ion-item lines="none">
@@ -27,12 +28,9 @@
         </ion-item-option>
       </ion-item-options>
       <ion-item>
-        <!-- <ion-buttons slot="start">
-          <ion-button fill="clear" [color]="prioridadeCores[item.prioridade]" (click)="toggleItem(item)">
-            <ion-icon name="radio-button-off"></ion-icon>
-          </ion-button>
-        </ion-buttons> -->
+        <!-- <ion-badge [color]="prioridadeCores[item.prioridade]" slot="start">.</ion-badge> -->
         <ion-label [color]="prioridadeCores[item.prioridade]">{{item.nome}}</ion-label>
+        <ion-badge color="medium" slot="end">{{item.dataOcorrencia | date:'dd/MM'}}</ion-badge>
       </ion-item>
       <ion-item-options side="end" (click)="toggleItem(item)">
         <ion-item-option expandable color="success">Feito!</ion-item-option>
@@ -45,13 +43,10 @@
           <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-item-option>
       </ion-item-options>
-      <ion-item class="text-done">
-        <!-- <ion-buttons slot="start">
-          <ion-button fill="clear" [color]="prioridadeCores[item.prioridade]" (click)="toggleItem(item)">
-            <ion-icon name="radio-button-on"></ion-icon>
-          </ion-button>
-        </ion-buttons> -->
-        <ion-label [color]="prioridadeCores[item.prioridade]">{{item.nome}}</ion-label>
+      <ion-item>
+        <!-- <ion-badge [color]="prioridadeCores[item.prioridade]" slot="start">.</ion-badge> -->
+        <ion-label [color]="prioridadeCores[item.prioridade]" class="text-done">{{item.nome}}</ion-label>
+        <ion-badge color="medium" slot="end">{{item.dataOcorrencia  | date:'dd/MM'}}</ion-badge>
       </ion-item>
       <ion-item-options side="end" (click)="toggleItem(item)">
         <ion-item-option expandable color="warning">Refazer!</ion-item-option>
@@ -72,7 +67,8 @@
       (keyup.enter)="adicionarItem()"></ion-input>
     <ion-buttons slot="end">
       <ion-button fill="clear" color="success" (click)="popoverSchedule($event)">
-        <ion-icon name="calendar"></ion-icon>
+        <ion-badge *ngIf="item.dataOcorrencia" color="medium">{{ item.dataOcorrencia | date: 'dd/MM' }}</ion-badge>
+        <ion-icon *ngIf="!item.dataOcorrencia"name="calendar"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
@@ -80,5 +76,7 @@
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <!--workaround para colocar em um botão o date-picker-->
+    <ion-datetime slot="end" #datePicker displayFormat="DD/MM/YYYY" [(ngModel)]="item.dataOcorrencia" min="2019" max="2050"></ion-datetime>
   </ion-toolbar>
 </ion-footer>

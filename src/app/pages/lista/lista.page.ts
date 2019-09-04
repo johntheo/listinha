@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { ToDoItem } from 'src/app/interfaces/item';
 import { Lista } from 'src/app/interfaces/lista';
-import { LoadingController, PopoverController } from '@ionic/angular';
+import { LoadingController, PopoverController, PickerController, IonDatetime } from '@ionic/angular';
 import { ItemScheduleComponent } from 'src/app/components/item-schedule/item-schedule.component';
 import { ItemPrioridadeComponent } from 'src/app/components/item-prioridade/item-prioridade.component';
 import { Observable } from 'rxjs';
@@ -31,7 +31,9 @@ export class ListaPage implements OnInit {
   item: ToDoItem = {
     prioridade: 0,
     nome: '',
-    finalizado: false
+    finalizado: false,
+    data: null,
+    dataOcorrencia: ''
   }
 
   prioridadeCores = [
@@ -40,6 +42,7 @@ export class ListaPage implements OnInit {
     "warning",
     "danger"
   ]
+  @ViewChild('datePicker',{static: false}) datePicker: IonDatetime;
 
   constructor(private route: ActivatedRoute, private afs: AngularFirestore, private firestoreService: FirestoreService, private loadingCtrl: LoadingController, private popoverCtrl: PopoverController) { }
 
@@ -115,18 +118,21 @@ export class ListaPage implements OnInit {
     this.item = {
       prioridade: 1,
       nome: '',
-      finalizado: false
+      finalizado: false,
+      data: null,
+      dataOcorrencia: ''
     }
   }
 
   async popoverSchedule(ev: any) {
-    const popover = await this.popoverCtrl.create({
-      component: ItemScheduleComponent,
-      event: ev,
-      animated: true,
-      showBackdrop: true
-    });
-    return await popover.present();
+    this.datePicker.open();
+    // const popover = await this.popoverCtrl.create({
+    //   component: ItemScheduleComponent,
+    //   event: ev,
+    //   animated: true,
+    //   showBackdrop: true
+    // });
+    // return await popover.present();
 
   }
 
