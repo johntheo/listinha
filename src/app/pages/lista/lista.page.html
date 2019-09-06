@@ -66,17 +66,17 @@
     <ion-input class="input-item" [(ngModel)]="item.nome" type="text" placeholder="Novo Item"
       (keyup.enter)="adicionarItem()"></ion-input>
     <ion-buttons slot="end">
-      <ion-button fill="clear" color="success" (click)="popoverSchedule($event)">
-        <ion-badge *ngIf="item.dataOcorrencia" color="medium">{{ item.dataOcorrencia | date: 'dd/MM' }}</ion-badge>
+      <ion-button fill="clear" color="medium" (click)="popoverSchedule($event)">
+        <ion-badge *ngIf="item.dataOcorrencia" color="primary">{{ item.dataOcorrencia | date: 'dd/MM' }}</ion-badge>
         <ion-icon *ngIf="!item.dataOcorrencia"name="calendar"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button fill="clear" color="primary" (click)="adicionarItem()">
+      <ion-button fill="clear" color="success" (click)="adicionarItem()">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
     <!--workaround para colocar em um botão o date-picker-->
-    <ion-datetime slot="end" #datePicker displayFormat="DD/MM/YYYY" [(ngModel)]="item.dataOcorrencia" min="2019" max="2050"></ion-datetime>
+    <ion-datetime slot="end" #datePicker [pickerOptions]="customPickerOptions" displayFormat="DD/MM/YYYY" [(ngModel)]="item.dataOcorrencia" min="2019" max="2050"></ion-datetime>
   </ion-toolbar>
 </ion-footer>

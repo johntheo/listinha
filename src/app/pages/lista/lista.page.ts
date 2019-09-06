@@ -42,11 +42,49 @@ export class ListaPage implements OnInit {
     "warning",
     "danger"
   ]
-  @ViewChild('datePicker',{static: false}) datePicker: IonDatetime;
+  @ViewChild('datePicker', { static: false }) datePicker: IonDatetime;
+
+  customPickerOptions: any;
 
   constructor(private route: ActivatedRoute, private afs: AngularFirestore, private firestoreService: FirestoreService, private loadingCtrl: LoadingController, private popoverCtrl: PopoverController) { }
 
   async ngOnInit() {
+
+    this.customPickerOptions = {
+      buttons: [{
+        text: 'Cancelar',
+        role: 'cancel',
+        color: 'success',
+        handler: () => { this.item.dataOcorrencia = '' }
+      },{
+        text: 'Salvar',
+        color: 'success',
+        handler: (data) => {
+          console.log(data);
+          let year: string = data.year.text;
+          let month: string = data.month.value < 10 ? '0' + data.month.value.toString() : data.month.value.toString();
+          let day: string = data.day.text;
+          // let hour: string = data.hour.text;
+          // let minute: string = data.minute.text;
+          this.item.dataOcorrencia = year + '-' + month + '-' + day + 'T' + '00:00' + ':00-0300';
+
+        }
+      }]
+    };
+
+    const loading = await this.loadingPresent();
+
+    this.id = this.route.snapshot.paramMap.get('id');
+
+    await this.loadListas();
+
+    //Atualiza Contador da lista
+    await this.updateContadorLista();
+
+    await loading.dismiss();
+  }
+
+  private async loadingPresent() {
     const loading = await this.loadingCtrl.create({
       spinner: 'crescent',
       duration: 5000,
@@ -54,38 +92,35 @@ export class ListaPage implements OnInit {
       translucent: true,
     });
     await loading.present();
+    return loading;
+  }
 
-    this.id = this.route.snapshot.paramMap.get('id');
-
+  private async loadListas() {
     this.listaRef = this.afs.doc(`listas/${this.id}`);
     this.lista = await this.firestoreService.get<Lista>(this.listaRef);
-
-    this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false).orderBy('prioridade','desc'));
+    this.itemsPendentesRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', false).orderBy('prioridade', 'desc'));
     await this.firestoreService.list<ToDoItem>(this.itemsPendentesRef).subscribe(res => {
       this.itemsPendentes = res;
     });
-
-    this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true).orderBy('prioridade','desc'));
+    this.itemsFinalizadosRef = this.afs.collection(`listas/${this.id}/items`, ref => ref.where('finalizado', '==', true).orderBy('prioridade', 'desc'));
     await this.firestoreService.list<ToDoItem>(this.itemsFinalizadosRef).subscribe(res => {
       this.itemsFinalizados = res;
     });
+  }
 
-    //Atualiza Contador da lista
+  private async updateContadorLista() {
     await this.firestoreService.list<ToDoItem>(this.afs.collection(`listas/${this.id}/items`)).subscribe(res => {
       if (res) {
         let pendentes = res.filter(el => el.finalizado == false).length;
         let finalizados = res.filter(el => el.finalizado == true).length;
         this.porcentagem = finalizados / (finalizados + pendentes);
-
         return this.firestoreService.update(this.listaRef, { porcentagem: this.porcentagem });
-      } else {
+      }
+      else {
         this.porcentagem = 0;
-
-        return this.firestoreService.update(this.listaRef, { porcentagem: 0 })
+        return this.firestoreService.update(this.listaRef, { porcentagem: 0 });
       }
     });
-
-    await loading.dismiss();
   }
 
   toggleItem(item: ToDoItem) {
@@ -126,14 +161,6 @@ export class ListaPage implements OnInit {
 
   async popoverSchedule(ev: any) {
     this.datePicker.open();
-    // const popover = await this.popoverCtrl.create({
-    //   component: ItemScheduleComponent,
-    //   event: ev,
-    //   animated: true,
-    //   showBackdrop: true
-    // });
-    // return await popover.present();
-
   }
 
   async popoverPrioridade(ev: any) {
@@ -144,8 +171,8 @@ export class ListaPage implements OnInit {
       showBackdrop: true
     });
 
-    popover.onWillDismiss().then((res) =>{
-      if(res.data){
+    popover.onWillDismiss().then((res) => {
+      if (res.data) {
         this.item.prioridade = res.data.prioridade
       }
     });
