@@ -160,7 +160,20 @@ export class ListaPage implements OnInit {
   }
 
   async popoverSchedule(ev: any) {
-    this.datePicker.open();
+    const popover = await this.popoverCtrl.create({
+      component: ItemScheduleComponent,
+      event: ev,
+      animated: true,
+      showBackdrop: true
+    });
+
+    popover.onWillDismiss().then((res) => {
+      if (res.data) {
+        this.item.data = res.data.regra;
+      }
+    });
+    return await popover.present();
+
   }
 
   async popoverPrioridade(ev: any) {

@@ -66,9 +66,14 @@
     <ion-input class="input-item" [(ngModel)]="item.nome" type="text" placeholder="Novo Item"
       (keyup.enter)="adicionarItem()"></ion-input>
     <ion-buttons slot="end">
-      <ion-button fill="clear" color="medium" (click)="popoverSchedule($event)">
+      <ion-button fill="clear" color="medium" (click)="datePicker.open()">
         <ion-badge *ngIf="item.dataOcorrencia" color="primary">{{ item.dataOcorrencia | date: 'dd/MM' }}</ion-badge>
         <ion-icon *ngIf="!item.dataOcorrencia"name="calendar"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="item.dataOcorrencia" slot="end">
+      <ion-button fill="clear" color="medium" (click)="popoverSchedule($event)">
+        <ion-icon name="repeat"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
